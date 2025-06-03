@@ -15,7 +15,7 @@ type RouteContext = {
 
 export async function POST(
   request: NextRequest,
-  context: RouteContext
+  { params }: { params: { id: string } }
 ) {
   try {
     const { preferredDate, preferredTime, paymentMethod } = await request.json();
@@ -25,7 +25,7 @@ export async function POST(
 
     // Update the estimate with the confirmed details
     const updatedEstimate = await prisma.estimate.update({
-      where: { id: context.params.id },
+      where: { id: params.id },
       data: {
         status: 'CONFIRMED',
         preferredDate: new Date(preferredDate),
