@@ -18,6 +18,7 @@ interface Appointment {
   serviceType: string;
   address?: string;
   phone?: string;
+  estimatedAmount?: number;
 }
 
 export default function AdminCalendar() {
@@ -138,6 +139,7 @@ export default function AdminCalendar() {
                   serviceType: info.event.extendedProps.serviceType,
                   address: info.event.extendedProps.address,
                   phone: info.event.extendedProps.phone,
+                  estimatedAmount: info.event.extendedProps.estimatedAmount,
                 });
               }}
               eventTimeFormat={{
@@ -199,6 +201,14 @@ export default function AdminCalendar() {
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</h3>
                   <p className="mt-1 text-lg text-gray-900 dark:text-white">{selectedAppointment.phone}</p>
+                </div>
+              )}
+              {selectedAppointment.estimatedAmount && (
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Estimated Amount</h3>
+                  <p className="mt-1 text-lg font-semibold text-blue-600 dark:text-blue-400">
+                    ${selectedAppointment.estimatedAmount.toFixed(2)}
+                  </p>
                 </div>
               )}
             </div>

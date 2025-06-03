@@ -21,6 +21,7 @@ export async function GET(request: Request) {
         preferredTime: true,
         address: true,
         phone: true,
+        estimatedAmount: true,
       },
     });
 
@@ -69,6 +70,7 @@ export async function GET(request: Request) {
           serviceType: appointment.serviceType,
           address: appointment.address,
           phone: appointment.phone,
+          estimatedAmount: appointment.estimatedAmount,
         };
       })
       .filter(Boolean);
