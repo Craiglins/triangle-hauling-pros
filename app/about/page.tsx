@@ -34,7 +34,7 @@ const values: { id: number; title: string; description: string; icon: IconType }
   {
     id: 1,
     title: 'Customer Satisfaction',
-    description: "We're not satisfied until our customers are completely happy with our service.",
+    description: "We&apos;re not satisfied until our customers are completely happy with our service.",
     icon: FaUsers
   },
   {

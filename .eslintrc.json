@@ -7,10 +7,14 @@
     "@typescript-eslint/no-unused-vars": ["error", { 
       "argsIgnorePattern": "^_",
       "varsIgnorePattern": "^_",
-      "ignoreRestSiblings": true
+      "ignoreRestSiblings": true,
+      "caughtErrorsIgnorePattern": "^_"
     }],
     "@typescript-eslint/no-explicit-any": "error",
-    "react/no-unescaped-entities": "off",
+    "react/no-unescaped-entities": ["error", {
+      "forbid": [">", "}"],
+      "allow": ["'"]
+    }],
     "no-var": "off"
   }
 } 
