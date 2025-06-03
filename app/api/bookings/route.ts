@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/lib/prisma';
 import { sendAdminEstimateNotification } from '@/lib/email';
+import { stripe } from '@/lib/stripe';
+// import { ServiceType, TimeSlot, PaymentMethod } from '@prisma/client';
 
 export async function POST(request: Request) {
   try {
@@ -31,9 +33,8 @@ export async function POST(request: Request) {
       try {
         // Combine serviceType and additionalInfo for a better description
         const description = `${data.serviceType ? data.serviceType + ': ' : ''}${data.additionalInfo || ''}`;
-        console.log('Attempting to generate estimate for description:', description);
-        
-        const analysisResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/estimates/analyze`, {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+        const analysisResponse = await fetch(`${baseUrl}/api/admin/estimates/analyze`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -42,18 +43,7 @@ export async function POST(request: Request) {
             textDescription: description,
           }),
         });
-
-        if (!analysisResponse.ok) {
-          throw new Error(`Estimate analysis failed with status: ${analysisResponse.status}`);
-        }
-
         const analysisData = await analysisResponse.json();
-        console.log('Received analysis data:', analysisData);
-
-        if (analysisData.error) {
-          throw new Error(analysisData.error);
-        }
-
         analysis = analysisData.analysis;
         estimatedAmount = parseFloat(analysisData.estimatedAmount) || null;
         status = 'PENDING_ADMIN_REVIEW';
