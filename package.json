@@ -43,6 +43,7 @@
     "@types/react-dom": "^19.1.5",
     "@types/react-icons": "^2.2.7",
     "eslint": "^9.28.0",
+    "eslint-config-next": "^15.3.3",
     "prisma": "^6.8.2",
     "typescript": "5.8.3"
   }
