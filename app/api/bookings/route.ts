@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       try {
         // Combine serviceType and additionalInfo for a better description
         const description = `${data.serviceType ? data.serviceType + ': ' : ''}${data.additionalInfo || ''}`;
-        const analysisResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/estimates/analyze`, {
+        const analysisResponse = await fetch(`/api/admin/estimates/analyze`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
