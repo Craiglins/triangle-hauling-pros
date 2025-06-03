@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Estimate {
+  id                String   @id @default(cuid())
+  customerId        String
+  name              String
+  email             String
+  phone             String
+  address           String
+  serviceType       String
+  preferredDate     DateTime
+  preferredTime     String
+  paymentMethod     String
+  additionalInfo    String?
+  status            String   @default("PENDING")
+  estimatedAmount   Float?
+  images            String[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  stripeInvoiceId   String?
+  paymentStatus     String   @default("UNPAID")
+  analysis          String?
+  paymentToken      String?
+  confirmationToken String?  @unique
+  customer          Customer @relation(fields: [customerId], references: [customerId])
+}
+
+model Customer {
+  id         String     @id @default(cuid())
+  customerId String     @unique
+  name       String
+  email      String
+  phone      String
+  address    String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  estimates  Estimate[]
+}
+
+enum ServiceType {
+  JUNK_REMOVAL
+  APPLIANCE_REMOVAL
+  FURNITURE_PICKUP
+  MOVE_OUT_CLEANOUTS
+  YARD_WASTE
+  DONATION_RUNS
+  CONSTRUCTION_DEBRIS
+}

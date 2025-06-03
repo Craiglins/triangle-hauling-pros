@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+:root {
+  /* Base colors */
+  --white: #ffffff;
+  --black: #121212;
+  
+  /* Primary color palette */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  /* Accent colors */
+  --blue-400: #5DB7E0; /* Original blue */
+  --blue-500: #3b9bcb;
+  --blue-600: #2878a6;
+  --blue-700: #1b5a80;
+  
+  --teal-400: #2DD4BF;
+  --teal-500: #14B8A6;
+  --teal-600: #0D9488;
+  
+  /* Theme colors */
+  --background: var(--white);
+  --foreground: var(--gray-900);
+  --muted: var(--gray-100);
+  --muted-foreground: var(--gray-600);
+  --primary: var(--blue-500);
+  --primary-foreground: var(--white);
+  --accent: var(--teal-500);
+  --accent-foreground: var(--gray-900);
+  --card-bg-from: #e5e7eb;
+  --card-bg-to: #d1d5db;
+  --card-bg-hover-from: #d1d5db;
+  --card-bg-hover-to: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--gray-900);
+    --foreground: var(--gray-100);
+    --muted: var(--gray-800);
+    --muted-foreground: var(--gray-200);
+    --primary: var(--blue-400);
+    --primary-foreground: var(--white);
+    --accent: var(--teal-400);
+    --accent-foreground: var(--black);
+    --card-bg-from: #1f2937;
+    --card-bg-to: #374151;
+    --card-bg-hover-from: #374151;
+    --card-bg-hover-to: #1f2937;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
+}
+
+/* Force react-datepicker to be white in all modes */
+.react-datepicker,
+.react-datepicker__header,
+.react-datepicker__month,
+.react-datepicker__day,
+.react-datepicker__day-name,
+.react-datepicker__current-month {
+  background: #fff !important;
+  color: #222 !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: #2563eb !important; /* your primary color */
+  color: #fff !important;
+}
+
+.react-datepicker__triangle {
+  border-bottom-color: #fff !important;
+}
