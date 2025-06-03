@@ -8,10 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 // }>;
 
 export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: unknown
 ) {
-  const { id } = params;
+  const { params } = context as { params: { id: string } };
+  const estimateId = params.id;
   try {
     const { preferredDate, preferredTime, paymentMethod } = await request.json();
 
@@ -20,7 +21,7 @@ export async function POST(
 
     // Update the estimate with the confirmed details
     const updatedEstimate = await prisma.estimate.update({
-      where: { id: id },
+      where: { id: estimateId },
       data: {
         status: 'CONFIRMED',
         preferredDate: new Date(preferredDate),
