@@ -5,7 +5,7 @@ if (!process.env.OPENAI_API_KEY) {
   throw new Error('OPENAI_API_KEY environment variable is not set');
 }
 
-const openai = new OpenAI({
+const _openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     }
 
     // Prepare the system message with detailed pricing and analysis instructions
-    const systemMessage: OpenAI.Chat.ChatCompletionMessageParam = {
+    const _systemMessage: OpenAI.Chat.ChatCompletionMessageParam = {
       role: "system",
       content: `You are an expert in junk removal and hauling services. Analyze the customer's description and provide a detailed estimate based on the following pricing model:
 
@@ -117,7 +117,7 @@ Format your response as a JSON object with these fields:
     };
 
     // Prepare the user message
-    const userMessage: OpenAI.Chat.ChatCompletionMessageParam = {
+    const _userMessage: OpenAI.Chat.ChatCompletionMessageParam = {
       role: "user",
       content: textDescription
     };
