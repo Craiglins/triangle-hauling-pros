@@ -3,12 +3,12 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(
   request: NextRequest,
-  context: { params: { token: string } }
+  { params }: { params: { token: string } }
 ) {
   try {
     const estimate = await prisma.estimate.findFirst({
       where: {
-        confirmationToken: context.params.token,
+        confirmationToken: params.token,
       },
       include: {
         customer: true,
