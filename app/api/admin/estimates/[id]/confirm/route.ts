@@ -9,9 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = params;
+  const { id } = context.params;
   try {
     const { preferredDate, preferredTime, paymentMethod } = await request.json();
 
