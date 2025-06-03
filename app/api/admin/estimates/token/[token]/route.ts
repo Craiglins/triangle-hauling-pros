@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+interface RouteSegment {
+  params: { token: string }
+}
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { token: string } }
+  segment: RouteSegment
 ) {
   try {
     const estimate = await prisma.estimate.findFirst({
       where: {
-        confirmationToken: params.token,
+        confirmationToken: segment.params.token,
       },
       include: {
         customer: true,
