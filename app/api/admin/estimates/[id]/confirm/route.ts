@@ -66,7 +66,6 @@ export async function POST(
       estimatedAmount: Number(updatedEstimate.estimatedAmount || 0),
       additionalInfo: updatedEstimate.additionalInfo ?? '',
       paymentMethod: updatedEstimate.paymentMethod,
-      estimateId: updatedEstimate.id,
       paymentLink,
     });
 

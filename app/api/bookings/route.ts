@@ -1,9 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/lib/prisma';
 import { sendAdminEstimateNotification } from '@/lib/email';
-import { stripe } from '@/lib/stripe';
-// import { ServiceType, TimeSlot, PaymentMethod } from '@prisma/client';
 
 export async function POST(request: Request) {
   try {

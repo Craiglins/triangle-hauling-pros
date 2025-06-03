@@ -72,13 +72,13 @@ export async function POST(request: Request) {
       content: `You are an expert in junk removal and hauling services. Analyze the customer's description and provide a detailed estimate based on the following pricing model:
 
 Pricing Tiers:
-${Object.entries(PRICING_TIERS).map(([key, tier]) => `
+${Object.entries(PRICING_TIERS).map(([, tier]) => `
 - ${tier.name} ($${tier.range.min} - $${tier.range.max})
   Description: ${tier.description}
   Examples: ${tier.examples.join(', ')}`).join('\n')}
 
 Additional Fees:
-${Object.entries(ADDITIONAL_FEES).map(([key, fee]) => `
+${Object.entries(ADDITIONAL_FEES).map(([, fee]) => `
 - ${fee.name}: +$${fee.fee}
   ${fee.description}`).join('\n')}
 
@@ -123,20 +123,36 @@ Format your response as a JSON object with these fields:
     };
 
     // Make the API call
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
-      messages: [systemMessage, userMessage],
-      max_tokens: 1000,
-      temperature: 0.7
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a professional junk removal estimator. Analyze the provided information and give a detailed estimate.'
+          },
+          {
+            role: 'user',
+            content: textDescription
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 500
+      })
     });
 
-    const content = completion.choices[0].message.content;
-    if (!content) {
+    const content = await response.json();
+    if (!content.choices || content.choices.length === 0 || !content.choices[0].message) {
       throw new Error('No content received from OpenAI');
     }
 
     try {
-      const estimateResponse = JSON.parse(content);
+      const estimateResponse = JSON.parse(content.choices[0].message.content);
       if (!estimateResponse.description || !estimateResponse.estimatedAmount || !estimateResponse.breakdown) {
         throw new Error('Invalid response format from OpenAI');
       }

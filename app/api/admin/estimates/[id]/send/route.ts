@@ -1,5 +1,5 @@
 console.log('==== ENTERED /api/admin/estimates/[id]/send ROUTE ====');
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sendEstimateEmail } from '@/lib/email';
 import { v4 as uuidv4 } from 'uuid';
@@ -40,14 +40,14 @@ interface EstimateWithCustomer {
 }
 
 export async function POST(
-  request: Request,
-  context: unknown
+  _request: NextRequest,
+  context: { params: { id: string } }
 ) {
-  const { params } = context as { params: { id: string } };
+  const { id } = context.params;
   try {
     const estimate = await prisma.estimate.findUnique({
       where: {
-        id: params.id,
+        id,
       },
       include: {
         customer: true,
@@ -70,9 +70,9 @@ export async function POST(
 
     console.log('About to update with confirmationToken:', confirmationToken);
 
-    const updatedEstimate = await prisma.estimate.update({
+    await prisma.estimate.update({
       where: {
-        id: params.id,
+        id,
       },
       data: {
         confirmationToken,
@@ -85,7 +85,7 @@ export async function POST(
 
     // Fetch the estimate again to ensure confirmationToken is present
     const freshEstimate = await prisma.estimate.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { customer: true },
     }) as EstimateWithCustomer;
 

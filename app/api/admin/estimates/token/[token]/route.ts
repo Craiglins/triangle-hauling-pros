@@ -8,23 +8,23 @@ export async function GET(
   const { token } = context.params;
 
   try {
-    const estimate = await prisma.estimate.findFirst({
-      where: {
-        confirmationToken: token,
-      },
+  const estimate = await prisma.estimate.findFirst({
+    where: {
+      confirmationToken: token,
+    },
       include: {
         customer: true,
       },
-    });
+  });
 
-    if (!estimate) {
+  if (!estimate) {
       return NextResponse.json(
         { error: 'Estimate not found' },
         { status: 404 }
       );
-    }
+  }
 
-    return NextResponse.json(estimate);
+  return NextResponse.json(estimate);
   } catch (error) {
     console.error('Error fetching estimate by token:', error);
     return NextResponse.json(
