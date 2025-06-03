@@ -1,14 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+type Props = {
+  params: {
+    token: string;
+  };
+};
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { token: string } }
+  props: Props
 ) {
   try {
     const estimate = await prisma.estimate.findFirst({
       where: {
-        confirmationToken: params.token,
+        confirmationToken: props.params.token,
       },
       include: {
         customer: true,
