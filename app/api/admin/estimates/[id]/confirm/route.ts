@@ -8,10 +8,10 @@ import { v4 as uuidv4 } from 'uuid';
 // }>;
 
 export async function POST(
-  request: NextRequest,
-  context: { params: { id: string } }
+  request: Request,
+  { params }: { params: { id: string } }
 ) {
-  const { id } = context.params;
+  const { id } = params;
   try {
     const { preferredDate, preferredTime, paymentMethod } = await request.json();
 
