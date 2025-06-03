@@ -41,7 +41,7 @@ const TermsOfServicePage = () => {
             <div>
               <h2 className="text-2xl font-bold mb-4 text-[var(--foreground)]">1. Acceptance of Terms</h2>
               <p className="text-[var(--muted-foreground)]">
-                By using our services, you agree to these terms. If you don&apos;t agree, please don&apos;t use our services.
+                By accessing and using Triangle Hauling Pros' services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services.
               </p>
             </div>
 

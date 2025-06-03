@@ -7,7 +7,7 @@ const TIME_SLOTS: Record<string, string> = {
   EVENING: '17:00',
 };
 
-export async function GET(_request: Request) {
+export async function GET(request: Request) {
   try {
     const appointments = await prisma.estimate.findMany({
       where: {

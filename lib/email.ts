@@ -159,6 +159,7 @@ export async function sendAppointmentConfirmationEmail({
   estimatedAmount,
   additionalInfo,
   paymentMethod,
+  estimateId,
   paymentLink,
 }: {
   to: string;
@@ -166,8 +167,9 @@ export async function sendAppointmentConfirmationEmail({
   preferredDate: Date;
   preferredTime: string;
   estimatedAmount: number;
-  additionalInfo: string;
+  additionalInfo?: string | null;
   paymentMethod: string;
+  estimateId: string;
   paymentLink?: string;
 }) {
   let paymentSection = '';

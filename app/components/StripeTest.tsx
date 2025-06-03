@@ -25,9 +25,8 @@ export default function StripeTest() {
       } else {
         setError(data.error || 'Unknown error');
       }
-    } catch (error) {
-      console.error('Error creating payment link:', error);
-      setError('Failed to create payment link');
+    } catch (err) {
+      setError('Network or server error');
     } finally {
       setLoading(false);
     }

@@ -1,51 +1,41 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { v4 as uuidv4 } from 'uuid';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { username, password } = await request.json();
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    // Check credentials against environment variables
+    if (
+      username === process.env.ADMIN_USERNAME &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      // Generate a session token
+      const sessionToken = uuidv4();
 
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      );
+      // Create the response
+      const response = NextResponse.json({ success: true });
+
+      // Set the session token in a cookie
+      response.cookies.set('admin_session', sessionToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24, // 24 hours
+        path: '/',
+      });
+
+      return response;
     }
 
-    const isValid = await compare(password, user.password);
-
-    if (!isValid) {
     return NextResponse.json(
       { error: 'Invalid credentials' },
       { status: 401 }
     );
-    }
-
-    const token = sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET || 'fallback-secret',
-      { expiresIn: '1d' }
-    );
-
-    const response = NextResponse.json({ success: true, token });
-    response.cookies.set('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 86400 // 1 day
-    });
-
-    return response;
   } catch (error) {
-    console.error('Login error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'An error occurred during login' },
       { status: 500 }
     );
   }

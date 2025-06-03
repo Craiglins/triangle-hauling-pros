@@ -31,8 +31,8 @@ export default function AdminDashboard() {
   const [estimateAmount, setEstimateAmount] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [_uploadingImages, setUploadingImages] = useState(false);
-  const [_showConfirmModal, setShowConfirmModal] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     fetchEstimates();
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const _handleImageUpload = async (estimateId: string, files: FileList | null) => {
+  const handleImageUpload = async (estimateId: string, files: FileList | null) => {
     if (!files || files.length === 0) return;
 
     setUploadingImages(true);
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const _handleConfirmEstimate = async (estimateId: string) => {
+  const handleConfirmEstimate = async (estimateId: string) => {
     try {
       const response = await fetch(`/api/admin/estimates/${estimateId}`, {
         method: 'PUT',
@@ -130,8 +130,8 @@ export default function AdminDashboard() {
         setSelectedEstimate(null);
         setShowConfirmModal(false);
       }
-    } catch (_error) {
-      console.error('Error confirming estimate:', _error);
+    } catch (error) {
+      console.error('Error confirming estimate:', error);
     }
   };
 
