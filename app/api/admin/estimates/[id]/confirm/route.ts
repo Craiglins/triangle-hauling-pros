@@ -11,16 +11,16 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const { id } = params;
   try {
     const { preferredDate, preferredTime, paymentMethod } = await request.json();
-    const estimateId = params.id;
 
     // Generate a new confirmation token for any future updates
     const confirmationToken = uuidv4();
 
     // Update the estimate with the confirmed details
     const updatedEstimate = await prisma.estimate.update({
-      where: { id: estimateId },
+      where: { id: id },
       data: {
         status: 'CONFIRMED',
         preferredDate: new Date(preferredDate),
